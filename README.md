@@ -1,2 +1,2 @@
 # BARTBahnar
-Accepted at LM4UC@NAACL25
+Accepted to LM4UC@NAACL25
