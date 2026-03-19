@@ -209,13 +209,17 @@ The following data files (including the BARTBahnar checkpoint) are included in t
 ```
 translation/
 └── checkpoints/
-    └── BartBanaFinal/     # BARTBahnar checkpoint (~1.5 GB, tracked with Git LFS)
+    └── BartBanaFinal/        # BARTBahnar checkpoint (~1.5 GB, tracked with Git LFS)
 data/
 ├── dictionary/
-│   └── bavi.csv               # Bilingual dictionary — columns: Bahnaric, Vietnamese
+│   └── bavi.csv                  # Bilingual dictionary — columns: Bahnaric, Vietnamese
 ├── corpus/
-│   ├── bahnaric.txt          # Monolingual Bahnaric sentences, one per line
-│   └── vietnamese_words.txt  # Vietnamese word list — one word per line
+│   ├── bahnaric.txt              # Monolingual Bahnaric sentences, one per line
+│   └── vietnamese_words.txt      # Vietnamese word list — one word per line
+└── raw/
+    ├── train.csv                 # Training split — 51,930 Bahnaric-Vietnamese pairs
+    ├── test.csv                  # Test split — 2,001 Bahnaric-Vietnamese pairs
+    └── back_translate.csv        # Back-translated pairs — 270,587 rows (UTF-8)
 ```
 
 To use your own data, replace these files or update the paths in `translation/config.py`.
@@ -399,7 +403,9 @@ BARTBahnar/
     │   ├── bahnaric.txt              # Monolingual Bahnaric corpus (for PMI segmentation)
     │   └── vietnamese_words.txt      # Vietnamese word list (for loanword detection)
     └── raw/
-        └── train.csv                 # Raw bilingual training data
+        ├── train.csv                 # Training split (51,930 pairs)
+        ├── test.csv                  # Test split (2,001 pairs)
+        └── back_translate.csv        # Back-translated pairs (270,587 rows)
 ```
 
 ---
