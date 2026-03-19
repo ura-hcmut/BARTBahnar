@@ -50,11 +50,11 @@ class SolrClient:
         try:
             data = json.loads(response.data.decode('utf-8'))
         except json.JSONDecodeError:
-            # print("❌ Failed to decode Solr response.")
+            # print("Failed to decode Solr response.")
             return []
 
         if 'response' not in data:
-            # print(f"❌ Solr error: {data.get('error', 'No error info')}")
+            # print(f"Solr error: {data.get('error', 'No error info')}")
             return []
 
         results = {}

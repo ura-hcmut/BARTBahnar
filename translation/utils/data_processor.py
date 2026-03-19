@@ -30,27 +30,27 @@ class DataProcessor:
         for path in self.input_paths:
             df = pd.read_csv(path)
 
-            if "tiếng bana" in df.columns and "tiếng việt" in df.columns:
+            if "Bahnaric" in df.columns and "Vietnamese" in df.columns:
                 initial_rows = df.shape[0]
                 self.rows_per_file.append(initial_rows)
 
                 # Find rows where exactly one column is missing
-                invalid_rows = df[(df["tiếng bana"].isna() & ~df["tiếng việt"].isna()) |
-                                  (~df["tiếng bana"].isna() & df["tiếng việt"].isna())]
+                invalid_rows = df[(df["Bahnaric"].isna() & ~df["Vietnamese"].isna()) |
+                                  (~df["Bahnaric"].isna() & df["Vietnamese"].isna())]
 
                 self.rows_removed += invalid_rows.shape[0]
                 self.removed_rows_info.append((path, invalid_rows.index.tolist()))
 
                 # Drop invalid rows
                 df = df.drop(invalid_rows.index)
-                self.dataframes.append(df[["tiếng bana", "tiếng việt"]])
+                self.dataframes.append(df[["Bahnaric", "Vietnamese"]])
 
         # Merge all DataFrames together
         self.merged_df = pd.concat(self.dataframes, ignore_index=True)
 
         # Remove duplicate records
         initial_merged_rows = self.merged_df.shape[0]
-        self.merged_df = self.merged_df.drop_duplicates(subset=["tiếng bana"]).drop_duplicates(subset=["tiếng việt"])
+        self.merged_df = self.merged_df.drop_duplicates(subset=["Bahnaric"]).drop_duplicates(subset=["Vietnamese"])
         self.duplicates_removed = initial_merged_rows - self.merged_df.shape[0]
 
     def save_clean_data(self, output_filename="final.csv"):
@@ -60,11 +60,11 @@ class DataProcessor:
         output_path = os.path.join(self.output_dir, output_filename)
         if self.merged_df is not None:
             self.merged_df.to_csv(output_path, index=False)
-            # print(f"✅ Clean data saved to {output_path}")
+            # print(f"Clean data saved to {output_path}")
         else:
             print("No data to save.")
 
-    def extract_sentences(self, column_name="tiếng bana", output_filename="bana_data.txt"):
+    def extract_sentences(self, column_name="Bahnaric", output_filename="bana_data.txt"):
         """
         Extract sentences from a specific column and save them to a text file.
         """
@@ -83,13 +83,13 @@ class DataProcessor:
                 if sentence:
                     f.write(sentence + "\n")
 
-        # print(f"✅ Saved {len(sentences)} sentences to '{output_path}'")
+        # print(f"Saved {len(sentences)} sentences to '{output_path}'")
 
     def print_summary(self):
         """
         Print a summary of the data processing results.
         """
-        # print("📊 Data processing summary:")
+        # print("Data processing summary:")
         # print("Total files:", len(self.input_paths))
         # print("Rows per file (before cleaning):", self.rows_per_file)
         # print("Rows removed (missing one column):", self.rows_removed)
@@ -122,6 +122,6 @@ if __name__ == "__main__":
     processor = DataProcessor(input_dir=args.input_dir, output_dir=args.output_dir)
     processor.load_and_clean_data()
     processor.save_clean_data("final.csv")
-    processor.extract_sentences("tiếng bana", "bahnaric.txt")
+    processor.extract_sentences("Bahnaric", "bahnaric.txt")
     processor.print_summary()
 
